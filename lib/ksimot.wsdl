@@ -1,0 +1,671 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://www2.ksi.is/vefthjonustur/mot/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://www2.ksi.is/vefthjonustur/mot/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://www2.ksi.is/vefthjonustur/mot/">
+      <s:element name="MotLeikir">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="MotNumer" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="MotLeikirResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="MotLeikirSvar" type="tns:MotLeikirSvar" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="MotLeikirSvar">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ArrayMotLeikir" type="tns:ArrayOfMotLeikur" />
+          <s:element minOccurs="1" maxOccurs="1" name="VillaNumer" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Villa" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfMotLeikur">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="MotLeikur" nillable="true" type="tns:MotLeikur" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="MotLeikur">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="LeikurNumer" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="UmferdNumer" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="LeikDagur" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="FelagHeimaNafn" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="FelagHeimaNumer" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="FelagUtiNafn" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="FelagUtiNumer" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="UrslitHeima" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="UrslitUti" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="StadaFyrriHalfleikHeima" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="StadaFyrriHalfleikUti" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="StadaSeinniHalfleikHeima" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="StadaSeinniHalfLeikUti" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SkyrslaStada" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="VollurNafn" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Ahorfendur" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="MotStada">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="MotNumer" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="MotStadaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="MotStadaSvar" type="tns:MotStadaSvar" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="MotStadaSvar">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ArrayMotStada" type="tns:ArrayOfMotStada" />
+          <s:element minOccurs="1" maxOccurs="1" name="VillaNumer" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Villa" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfMotStada">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="MotStada" nillable="true" type="tns:MotStada" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="MotStada">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="FelagNumer" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="FelagNafn" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="LeikirAlls" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="LeikirUnnir" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="LeikirJafnt" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="LeikirTap" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="MorkSkorud" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="MorkFenginASig" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="MorkMisMunur" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Stig" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="MotMarkahaestu">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="MotNumer" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="MotMarkahaestuResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="MotMarkahaestuSvar" type="tns:MotMarkahaestuSvar" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="MotMarkahaestuSvar">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ArrayMotMarkahaestu" type="tns:ArrayOfMotMarkahaestu" />
+          <s:element minOccurs="1" maxOccurs="1" name="VillaNumer" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Villa" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfMotMarkahaestu">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="MotMarkahaestu" nillable="true" type="tns:MotMarkahaestu" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="MotMarkahaestu">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="LeikmadurNumer" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="LeikmadurNafn" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FelagNafn" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Mork" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Viti" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Leikir" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="FelogLeikir">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="FelagNumer" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="VollurNumer" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="FlokkurNumer" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Kyn" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="DagsFra" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="DagsTil" type="s:dateTime" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FelogLeikirResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="FelogLeikirSvar" type="tns:FelogLeikirSvar" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="FelogLeikirSvar">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ArrayFelogLeikir" type="tns:ArrayOfFelogLeikir" />
+          <s:element minOccurs="1" maxOccurs="1" name="VillaNumer" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Villa" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfFelogLeikir">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="FelogLeikir" nillable="true" type="tns:FelogLeikir" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="FelogLeikir">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="LeikurNumer" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="LeikDagur" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="FelagHeimaNafn" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="FelagHeimaNumer" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="FelagUtiNafn" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="FelagUtiNumer" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="UrslitHeima" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="UrslitUti" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SkyrslaStada" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="VollurNafn" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="VollurNumer" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="MotNafn" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="MotNumer" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Flokkur" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="MotKyn" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="Flokkur">
+        <s:complexType />
+      </s:element>
+      <s:element name="FlokkurResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="FlokkurSvar" type="tns:FlokkurSvar" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="FlokkurSvar">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ArrayFlokkur" type="tns:ArrayOfFlokkur" />
+          <s:element minOccurs="1" maxOccurs="1" name="VillaNumer" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Villa" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfFlokkur">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Flokkur" nillable="true" type="tns:Flokkur" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Flokkur">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="FlokkurHeiti" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="FlokkurNumer" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="MotSpjoldGul">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="MotNumer" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="MotSpjoldGulResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="MotSpjoldSvar" type="tns:MotSpjoldSvar" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="MotSpjoldSvar">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ArrayMotSpjold" type="tns:ArrayOfMotSpjold" />
+          <s:element minOccurs="1" maxOccurs="1" name="VillaNumer" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Villa" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfMotSpjold">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="MotSpjold" nillable="true" type="tns:MotSpjold" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="MotSpjold">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="LeikmadurNumer" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="LeikmadurNafn" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FelagNafn" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Fjoldi" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="MotSpjoldRaud">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="MotNumer" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="MotSpjoldRaudResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="MotSpjoldSvar" type="tns:MotSpjoldSvar" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LeikurAtburdir">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LeikurNumer" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LeikurAtburdirResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LeikurAtburdurSvar" type="tns:LeikurAtburdirSvar" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="LeikurAtburdirSvar">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ArrayLeikurAtburdir" type="tns:ArrayOfLeikurAtburdir" />
+          <s:element minOccurs="1" maxOccurs="1" name="VillaNumer" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Villa" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfLeikurAtburdir">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="LeikurAtburdir" nillable="true" type="tns:LeikurAtburdir" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="LeikurAtburdir">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="LeikmadurNumer" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="LeikmadurNafn" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="FelagNumer" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="FelagNafn" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="TreyjuNumer" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="AtburdurMinuta" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="AtburdurNumer" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="AtburdurNafn" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="LeikurLeikmenn">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LeikurNumer" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LeikurLeikmennResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LeikurLeikmennSvar" type="tns:LeikurLeikmennSvar" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="LeikurLeikmennSvar">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ArrayLeikurLeikmenn" type="tns:ArrayOfLeikurLeikmenn" />
+          <s:element minOccurs="1" maxOccurs="1" name="VillaNumer" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Villa" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfLeikurLeikmenn">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="LeikurLeikmenn" nillable="true" type="tns:LeikurLeikmenn" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="LeikurLeikmenn">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="LeikmadurNumer" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="LeikmadurNafn" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="FelagNumer" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="FelagNafn" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TreyjuNumer" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="StadaNumer" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="StadaNafn" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Leikmadur" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="LeikurDomarar">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LeikurNumer" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LeikurDomararResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LeikurDomararSvar" type="tns:LeikurDomararSvar" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="LeikurDomararSvar">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ArrayLeikurDomarar" type="tns:ArrayOfLeikurDomarar" />
+          <s:element minOccurs="1" maxOccurs="1" name="VillaNumer" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Villa" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfLeikurDomarar">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="LeikurDomarar" nillable="true" type="tns:LeikurDomarar" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="LeikurDomarar">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="DomariNumer" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="DomariNafn" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="HlutverkNumer" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="HlutverkNafn" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="MotLeikirSoapIn">
+    <wsdl:part name="parameters" element="tns:MotLeikir" />
+  </wsdl:message>
+  <wsdl:message name="MotLeikirSoapOut">
+    <wsdl:part name="parameters" element="tns:MotLeikirResponse" />
+  </wsdl:message>
+  <wsdl:message name="MotStadaSoapIn">
+    <wsdl:part name="parameters" element="tns:MotStada" />
+  </wsdl:message>
+  <wsdl:message name="MotStadaSoapOut">
+    <wsdl:part name="parameters" element="tns:MotStadaResponse" />
+  </wsdl:message>
+  <wsdl:message name="MotMarkahaestuSoapIn">
+    <wsdl:part name="parameters" element="tns:MotMarkahaestu" />
+  </wsdl:message>
+  <wsdl:message name="MotMarkahaestuSoapOut">
+    <wsdl:part name="parameters" element="tns:MotMarkahaestuResponse" />
+  </wsdl:message>
+  <wsdl:message name="FelogLeikirSoapIn">
+    <wsdl:part name="parameters" element="tns:FelogLeikir" />
+  </wsdl:message>
+  <wsdl:message name="FelogLeikirSoapOut">
+    <wsdl:part name="parameters" element="tns:FelogLeikirResponse" />
+  </wsdl:message>
+  <wsdl:message name="FlokkurSoapIn">
+    <wsdl:part name="parameters" element="tns:Flokkur" />
+  </wsdl:message>
+  <wsdl:message name="FlokkurSoapOut">
+    <wsdl:part name="parameters" element="tns:FlokkurResponse" />
+  </wsdl:message>
+  <wsdl:message name="MotSpjoldGulSoapIn">
+    <wsdl:part name="parameters" element="tns:MotSpjoldGul" />
+  </wsdl:message>
+  <wsdl:message name="MotSpjoldGulSoapOut">
+    <wsdl:part name="parameters" element="tns:MotSpjoldGulResponse" />
+  </wsdl:message>
+  <wsdl:message name="MotSpjoldRaudSoapIn">
+    <wsdl:part name="parameters" element="tns:MotSpjoldRaud" />
+  </wsdl:message>
+  <wsdl:message name="MotSpjoldRaudSoapOut">
+    <wsdl:part name="parameters" element="tns:MotSpjoldRaudResponse" />
+  </wsdl:message>
+  <wsdl:message name="LeikurAtburdirSoapIn">
+    <wsdl:part name="parameters" element="tns:LeikurAtburdir" />
+  </wsdl:message>
+  <wsdl:message name="LeikurAtburdirSoapOut">
+    <wsdl:part name="parameters" element="tns:LeikurAtburdirResponse" />
+  </wsdl:message>
+  <wsdl:message name="LeikurLeikmennSoapIn">
+    <wsdl:part name="parameters" element="tns:LeikurLeikmenn" />
+  </wsdl:message>
+  <wsdl:message name="LeikurLeikmennSoapOut">
+    <wsdl:part name="parameters" element="tns:LeikurLeikmennResponse" />
+  </wsdl:message>
+  <wsdl:message name="LeikurDomararSoapIn">
+    <wsdl:part name="parameters" element="tns:LeikurDomarar" />
+  </wsdl:message>
+  <wsdl:message name="LeikurDomararSoapOut">
+    <wsdl:part name="parameters" element="tns:LeikurDomararResponse" />
+  </wsdl:message>
+  <wsdl:portType name="motSoap">
+    <wsdl:operation name="MotLeikir">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Skilar til baka leikjum í ákveðnu móti</wsdl:documentation>
+      <wsdl:input message="tns:MotLeikirSoapIn" />
+      <wsdl:output message="tns:MotLeikirSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="MotStada">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Stöðutafla í móti</wsdl:documentation>
+      <wsdl:input message="tns:MotStadaSoapIn" />
+      <wsdl:output message="tns:MotStadaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="MotMarkahaestu">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Markahæstu menn í móti</wsdl:documentation>
+      <wsdl:input message="tns:MotMarkahaestuSoapIn" />
+      <wsdl:output message="tns:MotMarkahaestuSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="FelogLeikir">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Leikir á tímabili hjá Félagi / velli</wsdl:documentation>
+      <wsdl:input message="tns:FelogLeikirSoapIn" />
+      <wsdl:output message="tns:FelogLeikirSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Flokkur">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Flokkur</wsdl:documentation>
+      <wsdl:input message="tns:FlokkurSoapIn" />
+      <wsdl:output message="tns:FlokkurSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="MotSpjoldGul">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gul spjöld í móti</wsdl:documentation>
+      <wsdl:input message="tns:MotSpjoldGulSoapIn" />
+      <wsdl:output message="tns:MotSpjoldGulSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="MotSpjoldRaud">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Rauð spjöld í móti</wsdl:documentation>
+      <wsdl:input message="tns:MotSpjoldRaudSoapIn" />
+      <wsdl:output message="tns:MotSpjoldRaudSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="LeikurAtburdir">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Atburðir í leik</wsdl:documentation>
+      <wsdl:input message="tns:LeikurAtburdirSoapIn" />
+      <wsdl:output message="tns:LeikurAtburdirSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="LeikurLeikmenn">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Leikmenn í leik</wsdl:documentation>
+      <wsdl:input message="tns:LeikurLeikmennSoapIn" />
+      <wsdl:output message="tns:LeikurLeikmennSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="LeikurDomarar">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Dómarar í leik</wsdl:documentation>
+      <wsdl:input message="tns:LeikurDomararSoapIn" />
+      <wsdl:output message="tns:LeikurDomararSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="motSoap" type="tns:motSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="MotLeikir">
+      <soap:operation soapAction="http://www2.ksi.is/vefthjonustur/mot/MotLeikir" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MotStada">
+      <soap:operation soapAction="http://www2.ksi.is/vefthjonustur/mot/MotStada" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MotMarkahaestu">
+      <soap:operation soapAction="http://www2.ksi.is/vefthjonustur/mot/MotMarkahaestu" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FelogLeikir">
+      <soap:operation soapAction="http://www2.ksi.is/vefthjonustur/mot/FelogLeikir" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Flokkur">
+      <soap:operation soapAction="http://www2.ksi.is/vefthjonustur/mot/Flokkur" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MotSpjoldGul">
+      <soap:operation soapAction="http://www2.ksi.is/vefthjonustur/mot/MotSpjoldGul" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MotSpjoldRaud">
+      <soap:operation soapAction="http://www2.ksi.is/vefthjonustur/mot/MotSpjoldRaud" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LeikurAtburdir">
+      <soap:operation soapAction="http://www2.ksi.is/vefthjonustur/mot/LeikurAtburdir" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LeikurLeikmenn">
+      <soap:operation soapAction="http://www2.ksi.is/vefthjonustur/mot/LeikurLeikmenn" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LeikurDomarar">
+      <soap:operation soapAction="http://www2.ksi.is/vefthjonustur/mot/LeikurDomarar" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="motSoap12" type="tns:motSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="MotLeikir">
+      <soap12:operation soapAction="http://www2.ksi.is/vefthjonustur/mot/MotLeikir" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MotStada">
+      <soap12:operation soapAction="http://www2.ksi.is/vefthjonustur/mot/MotStada" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MotMarkahaestu">
+      <soap12:operation soapAction="http://www2.ksi.is/vefthjonustur/mot/MotMarkahaestu" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FelogLeikir">
+      <soap12:operation soapAction="http://www2.ksi.is/vefthjonustur/mot/FelogLeikir" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Flokkur">
+      <soap12:operation soapAction="http://www2.ksi.is/vefthjonustur/mot/Flokkur" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MotSpjoldGul">
+      <soap12:operation soapAction="http://www2.ksi.is/vefthjonustur/mot/MotSpjoldGul" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MotSpjoldRaud">
+      <soap12:operation soapAction="http://www2.ksi.is/vefthjonustur/mot/MotSpjoldRaud" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LeikurAtburdir">
+      <soap12:operation soapAction="http://www2.ksi.is/vefthjonustur/mot/LeikurAtburdir" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LeikurLeikmenn">
+      <soap12:operation soapAction="http://www2.ksi.is/vefthjonustur/mot/LeikurLeikmenn" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LeikurDomarar">
+      <soap12:operation soapAction="http://www2.ksi.is/vefthjonustur/mot/LeikurDomarar" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="mot">
+    <wsdl:port name="motSoap" binding="tns:motSoap">
+      <soap:address location="http://www2.ksi.is/vefthjonustur/mot.asmx" />
+    </wsdl:port>
+    <wsdl:port name="motSoap12" binding="tns:motSoap12">
+      <soap12:address location="http://www2.ksi.is/vefthjonustur/mot.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

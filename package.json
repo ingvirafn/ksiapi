@@ -1,0 +1,20 @@
+{
+  "name": "ksiapi",
+  "version": "0.1.0",
+  "private": true,
+  "author": {
+    "name": "Ingvi Rafn Guðmundsson",
+    "email": "ingvirafn@ingvirafn.com"
+  },
+  "description": "JSON Wrapper for KSÍ web service",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ingvirafn/ksiapi.git"
+  },
+  "contributors": [],
+  "dependencies": {
+    "express": "4.12.4",
+    "debug": "~2.2.0",
+    "soap": "0.9.1"
+  }
+}

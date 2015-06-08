@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/css/bootstrap-combined.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular.min.js"></script>
+</head>
+<body>
+
+    <div ng-app="ksiApiApp">
+        <h2>KSÍ API's</h2>
+        <div ng-controller="mainCtrl">
+            <ul>
+                <li ng-repeat="apiEndpoint in apiEndpoints">
+                    <span><b><a ng-href="{{apiEndpoint.demoroute}}">{{apiEndpoint.route}}</a></b>:</span><br />
+                    <span>{{apiEndpoint.desc}}</span><br/>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        angular.module('ksiApiApp', [])
+          .controller('mainCtrl', function ($scope, $http) {
+              $scope.apiEndpoints = [];
+                //{ desc: 'learn angular', route: 'xx' },
+                //{ desc: 'build an angular app', route: 'xx' }];
+              $http.get('/ksiapi').success(function(data) {
+                  $scope.apiEndpoints = data;
+              });
+
+          });
+    </script>
+</body>
+</html>
