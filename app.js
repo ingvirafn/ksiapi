@@ -87,6 +87,8 @@ var apiGoalscorers = {
 		}
 	}
 };
+apiRoutes.push(apiGoalscorers);
+
 var apiLeikmenn = { 
 	route: '/players/:teamId', 
 	desc: 'Lists the registered player for given team',
