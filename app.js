@@ -87,7 +87,20 @@ var apiGoalscorers = {
 		}
 	}
 };
-apiRoutes.push(apiGoalscorers);
+var apiLeikmenn = { 
+	route: '/players/:teamId', 
+	desc: 'Lists the registered player for given team',
+	handler: function (req, res) {
+		var err = function(p) { onerror(res, p); };
+		try {
+			ksiClient.getLeikmenn({ id: req.params.teamId }, err, onSuccess(res));
+		} catch (error) {
+			err(error);
+		}
+	}
+};
+
+apiRoutes.push(apiLeikmenn);
 
 var baseApiRoute = '/ksiapi';
 
@@ -101,7 +114,13 @@ for (var key in apiRoutes) {
 
 // api route directory
 app.get(baseApiRoute, function (req, res) {
-	res.json(apiRoutes.map(function(x) { return { desc: x.desc, route: baseApiRoute+x.route, demoroute: baseApiRoute+x.route.replace(':id', '33503') }; }));
+	res.json(apiRoutes.map(function(x) { 
+		return { 
+			desc: x.desc, 
+			route: baseApiRoute+x.route, 
+			demoroute: baseApiRoute+x.route.replace(':id', '33503').replace(':teamId', '230') 
+		}; 
+	}));
 });
 
 // 
