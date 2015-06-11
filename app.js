@@ -14,24 +14,18 @@ var cors = require('./lib/cors.js');
 app.use(cors());
 
 // Enable SignatureHeaders
-var expireFilterPassword = 'krapp';
-
-var sh = require('./lib/signatureHeaders.js');
-
-app.get('/getToken', function (req, res) {
-	var expireDate = new Date();
-	expireDate.setDate(expireDate.getDate()+1);
-	var token = sh.generateExpireToken(expireDate, expireFilterPassword);
-	res.json({ Expires: expireDate, Token: token });
-});
-
-app.get('/getToken2', function (req, res) {
-	var expireDate = new Date();
-	expireDate.setDate(expireDate.getDate()-1);
-	var token = sh.generateExpireToken(expireDate, expireFilterPassword);
-	res.json({ Expires: expireDate, Token: token });
-});
-app.use(sh.expireFilter(expireFilterPassword));
+// var expireFilterPassword = 'krapp';
+// 
+// var sh = require('./lib/signatureHeaders.js');
+// 
+// app.get('/getToken', function (req, res) {
+// 	var expireDate = new Date();
+// 	expireDate.setDate(expireDate.getDate()+1);
+// 	var token = sh.generateExpireToken(expireDate, expireFilterPassword);
+// 	res.json({ Expires: expireDate, Token: token });
+// });
+// 
+// app.use(sh.expireFilter(expireFilterPassword));
 
 // Error handling..
 var onError = function(res, text) {
