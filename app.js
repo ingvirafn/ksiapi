@@ -139,7 +139,7 @@ var apiGamesiCal = {
 			debug('Sending request to KSÍ');
 			ksiClient.getMot(req.params.id, err, function(data) {
 				var icalResult = iCal('ksi-' + req.params.id,  // TOOD: end  = x.LeikDagur + 2 hours
-						data.map(function(x) { return { start: x.LeikDagur, end: endDate(x.LeikDagur), name: gameDescription(x) }; })
+						data.map(function(x) { return { start: x.LeikDagur, end: endDate(x.LeikDagur), uid: x.LeikurNumer.toString(), name: gameDescription(x) }; })
 					);
 				debug('Sending response to client');
 				res.append('Content-type','text/calendar; charset=utf-8');
