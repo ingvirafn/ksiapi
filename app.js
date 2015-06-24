@@ -4,6 +4,8 @@ var debug = debug || console.log;
 var express = require('express');
 var app = express();
 var ksiModule = require('./lib/ksi.js');
+var iCal = require('./lib/ical.js');
+
 
 // Setup KSÍ client, the server
 var ksiClient, server;
@@ -117,6 +119,42 @@ var apiLeikmenn = {
 };
 
 apiRoutes.push(apiLeikmenn);
+
+
+
+var apiGamesiCal = { 
+	route: '/games/ical/:id', 
+	desc: 'Returns the games in tournament in iCal format',
+	handler: function (req, res) {
+		var err = function(p) { onerror(res, p); };
+		try {
+			var endDate = function(startDate) { startDate.setHours(startDate.getHours()+2); return startDate; };
+			var gameDescription = function(x) { 
+				if (x.SkyrslaStada == 'S') {
+					return x.FelagHeimaNafn + ' ('+x.UrslitHeima.toString()+') vs. ('+x.UrslitUti.toString()+') '+ x.FelagUtiNafn;					
+				} else {
+					return x.FelagHeimaNafn + ' vs. '+ x.FelagUtiNafn;
+				}
+			 };
+			debug('Sending request to KSÍ');
+			ksiClient.getMot(req.params.id, err, function(data) {
+				var icalResult = iCal('ksi-' + req.params.id,  // TOOD: end  = x.LeikDagur + 2 hours
+						data.map(function(x) { return { start: x.LeikDagur, end: endDate(x.LeikDagur), name: gameDescription(x) }; })
+					);
+				debug('Sending response to client');
+				res.append('Content-type','text/calendar; charset=utf-8');
+				res.append('Content-Disposition','inline; filename=calendar-'+req.params.id+'.ics');
+				res.write(icalResult);
+				res.end();
+				debug('Done.');
+			});
+		} catch (error) {
+			err(error);
+		}
+	}
+};
+
+apiRoutes.push(apiGamesiCal);
 
 var baseApiRoute = '/ksiapi';
 
