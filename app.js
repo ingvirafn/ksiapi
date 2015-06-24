@@ -128,7 +128,7 @@ var apiGamesiCal = {
 	handler: function (req, res) {
 		var err = function(p) { onerror(res, p); };
 		try {
-			var endDate = function(startDate) { startDate.setHours(startDate.getHours()+2); return startDate; };
+			var endDate = function(startDate) {var d = new Date(startDate); d.setHours((d.getHours()+2)); return d; };
 			var gameDescription = function(x) { 
 				if (x.SkyrslaStada == 'S') {
 					return x.FelagHeimaNafn + ' ('+x.UrslitHeima.toString()+') vs. ('+x.UrslitUti.toString()+') '+ x.FelagUtiNafn;					
