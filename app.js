@@ -64,10 +64,12 @@ apiRoutes.push(apiTournaments);
 var apiGames = { 
 	route: '/games/:id', 
 	desc: 'Lists games in a tournament',
+	pars: [ { name:'teamId', desc:'Filters on specified team' } ],
 	handler: function (req, res) {
 		var err = function(p) { onerror(res, p); };
 		try {
-			ksiClient.getMot(req.params.id, err, onSuccess(res));
+			debug(req.query.teamId);
+			ksiClient.getMot({ id: req.params.id, teamId: req.query.teamId }, err, onSuccess(res));
 		} catch (error) {
 			err(error);
 		}
@@ -172,6 +174,7 @@ app.get(baseApiRoute, function (req, res) {
 		return { 
 			desc: x.desc, 
 			route: baseApiRoute+x.route, 
+			pars: x.pars,
 			demoroute: baseApiRoute+x.route.replace(':id', '33503').replace(':teamId', '230') 
 		}; 
 	}));

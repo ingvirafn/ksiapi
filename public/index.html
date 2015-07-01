@@ -6,6 +6,11 @@
     <title></title>
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/css/bootstrap-combined.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular.min.js"></script>
+    <style>
+        body > div > div > ul > li {
+            margin: 10px;
+        }
+    </style>
 </head>
 <body>
 
@@ -16,6 +21,14 @@
                 <li ng-repeat="apiEndpoint in apiEndpoints">
                     <span><b><a ng-href="{{apiEndpoint.demoroute}}">{{apiEndpoint.route}}</a></b>:</span><br />
                     <span>{{apiEndpoint.desc}}</span><br/>
+                    <div ng-show="apiEndpoint.pars && apiEndpoint.pars.length > 0">
+                        <strong>Parameters:</strong>
+                        <ul>
+                            <li ng-repeat="par in apiEndpoint.pars">
+                                <strong>{{par.name}}</strong>: {{par.desc}}
+                            </li>
+                        </ul>
+                    </div>
                 </li>
             </ul>
         </div>
