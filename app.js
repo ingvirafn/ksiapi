@@ -36,8 +36,11 @@ app.use(cors());
 // app.use(sh.expireFilter(expireFilterPassword));
 
 // Error handling..
-var onError = function(res, text) {
-	res.json({error: text });
+var onError = function(res, err) {
+	var errMsg = 'Unknown error';
+	if (err) { if (err.message) { errMsg = err.message; } else { errMsg = err; } }
+	debug(errMsg);
+	res.json({ error: errMsg });
 };
 // Success handling
 var onSuccess = function(res) {
@@ -56,8 +59,7 @@ var apiTournaments = {
 	route: '/tournaments', 
 	desc: 'Lists tournaments for current year',
 	handler: function (req, res) {
-		var err = function(p) { onerror(res, p); };
-		debug('tournaments..');
+		var err = function(p) { onError(res, p); };
 		try {
 			ksiClient.getMotList(err, onSuccess(res));
 		} catch (error) {
@@ -71,10 +73,12 @@ apiRoutes.push(apiTournaments);
 var apiGames = { 
 	route: '/games/:id', 
 	desc: 'Lists games in a tournament',
+	pars: [ { name:'teamId', desc:'Filters on specified team' } ],
 	handler: function (req, res) {
-		var err = function(p) { onerror(res, p); };
+		var err = function(p) { onError(res, p); };
 		try {
-			ksiClient.getMot(req.params.id, err, onSuccess(res));
+			debug(req.query.teamId);
+			ksiClient.getMot({ id: req.params.id, teamId: req.query.teamId }, err, onSuccess(res));
 		} catch (error) {
 			err(error);
 		}
@@ -87,7 +91,7 @@ var apiScoretable = {
 	route: '/table/:id', 
 	desc: 'Returns the table for given tournament',
 	handler: function (req, res) {
-		var err = function(p) { onerror(res, p); };
+		var err = function(p) { onError(res, p); };
 		try {
 			ksiClient.getStada(req.params.id, err, onSuccess(res));
 		} catch (error) {
@@ -102,7 +106,7 @@ var apiGoalscorers = {
 	route: '/topscorers/:id', 
 	desc: 'Lists the top scorers for given tournament',
 	handler: function (req, res) {
-		var err = function(p) { onerror(res, p); };
+		var err = function(p) { onError(res, p); };
 		try {
 			ksiClient.getMarkahaestu(req.params.id, err, onSuccess(res));
 		} catch (error) {
@@ -116,7 +120,7 @@ var apiLeikmenn = {
 	route: '/players/:teamId', 
 	desc: 'Lists the registered player for given team',
 	handler: function (req, res) {
-		var err = function(p) { onerror(res, p); };
+		var err = function(p) { onError(res, p); };
 		try {
 			ksiClient.getLeikmenn({ id: req.params.teamId }, err, onSuccess(res));
 		} catch (error) {
@@ -132,8 +136,9 @@ apiRoutes.push(apiLeikmenn);
 var apiGamesiCal = { 
 	route: '/games/ical/:id', 
 	desc: 'Returns the games in tournament in iCal format',
+	pars: [ { name:'teamId', desc:'Filters on specified team' } ],
 	handler: function (req, res) {
-		var err = function(p) { onerror(res, p); };
+		var err = function(p) { onError(res, p); };
 		try {
 			var endDate = function(startDate) {var d = new Date(startDate); d.setHours((d.getHours()+2)); return d; };
 			var gameDescription = function(x) { 
@@ -144,8 +149,8 @@ var apiGamesiCal = {
 				}
 			 };
 			debug('Sending request to KSÍ');
-			ksiClient.getMot(req.params.id, err, function(data) {
-				var icalResult = iCal('ksi-' + req.params.id,  // TOOD: end  = x.LeikDagur + 2 hours
+			ksiClient.getMot({ id: req.params.id, teamId: req.query.teamId }, err, function(data) {
+				var icalResult = iCal('ksi-' + req.params.id, 
 						data.map(function(x) { return { start: x.LeikDagur, end: endDate(x.LeikDagur), uid: x.LeikurNumer.toString(), name: gameDescription(x) }; })
 					);
 				debug('Sending response to client');
@@ -179,6 +184,7 @@ app.get(baseApiRoute, function (req, res) {
 		return { 
 			desc: x.desc, 
 			route: baseApiRoute+x.route, 
+			pars: x.pars,
 			demoroute: baseApiRoute+x.route.replace(':id', '33503').replace(':teamId', '230') 
 		}; 
 	}));
