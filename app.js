@@ -11,9 +11,15 @@ var iCal = require('./lib/ical.js');
 var ksiClient, server;
 var SERVERPORT = process.env.PORT || 3000;
 
+// // Enable AUTH
+// var auth = require('./lib/auth.js');
+// app.use(auth());
+
+
 // Enable CORS
 var cors = require('./lib/cors.js');
 app.use(cors());
+
 
 // Enable SignatureHeaders
 // var expireFilterPassword = 'krapp';
@@ -48,9 +54,10 @@ var apiRoutes = [];
 // List of tournaments
 var apiTournaments = { 
 	route: '/tournaments', 
-	desc: 'Lists tournaments (currently just fixed list)',
+	desc: 'Lists tournaments for current year',
 	handler: function (req, res) {
 		var err = function(p) { onerror(res, p); };
+		debug('tournaments..');
 		try {
 			ksiClient.getMotList(err, onSuccess(res));
 		} catch (error) {

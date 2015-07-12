@@ -1,0 +1,5 @@
+var debug = debug || console.log;
+
+module.exports = function(phonenumber, message)  {
+	debug('Sending sms to '+phonenumber.toString()+': '+message);
+};
