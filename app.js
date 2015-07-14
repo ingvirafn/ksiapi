@@ -73,7 +73,7 @@ apiRoutes.push(apiTournaments);
 var apiGames = { 
 	route: '/games/:id', 
 	desc: 'Lists games in a tournament',
-	pars: [ { name:'teamId', desc:'Filters on specified team' } ],
+	pars: [ { name:'id', desc:'The tournament id' }, { name:'teamId', desc:'Filters on specified team (optional query parameter)' } ],
 	handler: function (req, res) {
 		var err = function(p) { onError(res, p); };
 		try {
