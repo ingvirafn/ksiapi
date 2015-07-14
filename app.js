@@ -86,6 +86,22 @@ var apiGames = {
 };
 apiRoutes.push(apiGames);
 
+// Players for a particular game
+var apiLeikmenn = { 
+	route: '/game/players/:gameId', 
+	desc: 'Lists the players which participate in the game',
+	handler: function (req, res) {
+		var err = function(p) { onError(res, p); };
+		try {
+			ksiClient.getLeikurLeikmenn(req.params.gameId, err, onSuccess(res));
+		} catch (error) {
+			err(error);
+		}
+	}
+};
+
+apiRoutes.push(apiLeikmenn);
+
 // Scoretable for tournament
 var apiScoretable = { 
 	route: '/table/:id', 
@@ -136,7 +152,7 @@ apiRoutes.push(apiLeikmenn);
 var apiGamesiCal = { 
 	route: '/games/ical/:id', 
 	desc: 'Returns the games in tournament in iCal format',
-	pars: [ { name:'teamId', desc:'Filters on specified team' } ],
+	pars: [ { name:'id', desc:'The tournament id' }, { name:'teamId', desc:'Filters on specified team (optional query parameter)' } ],
 	handler: function (req, res) {
 		var err = function(p) { onError(res, p); };
 		try {
@@ -168,6 +184,23 @@ var apiGamesiCal = {
 
 apiRoutes.push(apiGamesiCal);
 
+// Lists types which are used in the ws
+var apiMetadata = { 
+	route: '/metadata', 
+	desc: 'Lists types which are used in the ws',
+	handler: function (req, res) {
+		var err = function(p) { onError(res, p); };
+		try {
+			ksiClient.metadata(err, onSuccess(res));
+		} catch (error) {
+			err(error);
+		}
+	}
+};
+
+apiRoutes.push(apiMetadata);
+
+
 var baseApiRoute = '/ksiapi';
 
 // Register the routes
@@ -185,7 +218,7 @@ app.get(baseApiRoute, function (req, res) {
 			desc: x.desc, 
 			route: baseApiRoute+x.route, 
 			pars: x.pars,
-			demoroute: baseApiRoute+x.route.replace(':id', '33503').replace(':teamId', '230') 
+			demoroute: baseApiRoute+x.route.replace(':id', '33503').replace(':teamId', '230').replace(':gameId', '362343') 
 		}; 
 	}));
 });
