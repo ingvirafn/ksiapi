@@ -1,0 +1,275 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/css/bootstrap-combined.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css">
+    <script src="https://code.angularjs.org/1.3.16/angular.min.js"></script>
+    <script src="https://code.angularjs.org/1.3.16/i18n/angular-locale_is.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment-with-locales.min.js"></script>
+    
+    <script>
+        moment().format();
+        
+        function daysBetween(first, second) {
+
+            // Copy date parts of the timestamps, discarding the time parts.
+            var one = new Date(first.getFullYear(), first.getMonth(), first.getDate());
+            var two = new Date(second.getFullYear(), second.getMonth(), second.getDate());
+        
+            // Do the math.
+            var millisecondsPerDay = 1000 * 60 * 60 * 24;
+            var millisBetween = two.getTime() - one.getTime();
+            var days = millisBetween / millisecondsPerDay;
+        
+            // Round down.
+            return Math.floor(days);
+        }
+
+    </script>
+    <style>
+        table {
+            min-width: 900px;
+        }
+        tr > td {
+            min-width: 50px;
+            text-align: center;
+        }
+        th {
+            background: dodgerblue;
+            color: white;
+        }
+        .hl {
+            background: lawngreen;
+        }
+        a {
+            cursor: pointer;
+        }
+        .tag {
+            float: left;
+            margin: 2px;
+            padding: 2px;
+            border: solid 1px cornflowerblue;
+            background: cornflowerblue;
+            color: white;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .tag > * {
+            background: cornflowerblue;
+            color: white;  
+        }
+        .tag > *:hover {
+            background: cornflowerblue;
+            color: white;  
+            text-decoration: none;
+        }
+        .tag > *:last-child {
+            margin-left: 10px;
+            margin-right: 1px;
+            padding: 3px;
+            padding-left:4px;
+            border-left: solid 1px white;
+        }
+    </style>
+</head>
+<body>
+
+    <div ng-app="ksiApiApp">
+        
+        <h2>KSÍ example app</h2>
+        <div ng-controller="mainCtrl">
+            
+            <p>Veldu mót:</p>
+            <select ng-model="selectedTournament" ng-change="tournamentChange()" ng-options="t as t.name for t in tournaments">
+            </select>
+            
+            <p>Uppáhalds</p>
+            <div>
+                <div ng-repeat="x in favs" class="tag">
+                    <a ng-click="loadTournament(x)">{{x.name}}</a>
+                    <a ng-click="remFav(x)" class="fa fa-close"></a>
+                </div>
+                <a ng-show="canAddToFav" ng-click="addToFav(selectedTournament)" style="clear:left; float:left">
+                    Bæta við {{selectedTournament.name}}
+                </a>
+                <a ng-click="clearFav()">Hreinsa</a>
+            </div>
+            <div ng-show="tournamentId != null">
+            <h3 style="clear: left;">Taflan</h3>
+            <input type="checkbox" ng-model="details">Details</input>
+            <table >
+                <tr>
+                    <th></th>
+                    <th>Lið</th>
+                    <th>Stig</th>
+                    <th>Net</th>
+                    <th ng-show="$parent.details">Stig í næsta</th>
+                    <th>Næsti mótherji</th>
+                    <th ng-show="$parent.details">Sæti mótherja</th>
+                    <th>Stigamunur</th>
+                    <th ng-show="$parent.details">Dags næsta leiks</th>
+                    <th>Dagar í leik</th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="spot in table track by $index" ng-class="{ hl: spot.isToday}">
+                    <td>{{$index+1}}</td>
+                    <td>{{spot.name}}</td>
+                    <td>{{spot.points}}</td>
+                    <td>{{spot.net}}</td>
+                    <td ng-show="$parent.details">{{spot.nextUp}}</td>
+                    <td>{{spot.nextGame.opponent.name}}</td>
+                    <td ng-show="$parent.details">{{spot.nextGame.opponent.position}}</td>
+                    <td>{{spot.nextGame.opponent.pointsDiff}}</td>
+                    <td ng-show="$parent.details">{{spot.nextGame.game.LeikDagur | date}}</td>
+                    <td>{{spot.nextGame.daysTill }}</td>
+                    <td ng-show="$parent.details">{{ spot.nextGame | json }}</td>
+                </tr>
+            </table>
+            </div>
+        </div>
+        
+    </div>
+
+    <script>
+        angular.module('ksiApiApp', [])
+          .controller('tagCtrl', function ($scope, $http) {
+              $scope.tags = [];
+              $scope.val = '';
+              $scope.keypress = function($event) {
+                  if ($event.keyCode == 13 && $scope.val && $scope.val.length > 0 && $scope.tags.indexOf($scope.val) < 0) {
+                      $scope.tags.push($scope.val);
+                      $scope.val = '';
+                  }
+              };
+          })
+          .controller('mainCtrl', function ($scope, $http) {
+              $scope.table = [];
+              $scope.details = false;
+              $scope.highlighttoday = false;
+              $scope.tournaments = [];
+              $scope.tournamentId = null;
+              $scope.selectedTournament = null;
+              $scope.canAddToFav = false;
+              $scope.favs = [];
+              
+              $scope.save = function() {
+                  
+              };
+              $scope.clear = function() {
+                  
+              };
+              var tournamentId = '33503';
+              
+              var getScoreTable = function(ctx) {
+                  return $http.get('http://ksiapi.azurewebsites.net/ksiapi/table/' + ctx.id)
+                        .then(function(res) {
+                          var res = res.data.map(function(x, idx, arr) {
+                             var nextUp = '';
+                             if (idx > 0) {
+                                 nextUp = arr[idx-1].Stig - arr[idx].Stig;
+                             }
+                             return {name: x.FelagNafn, id: x.FelagNumer, nextUp: nextUp, points: x.Stig, net: x.MorkMisMunur };
+                          });
+                          return {id: ctx.id, scoreTable: res };
+                        });
+                  },
+                  getGames = function(ctx) {
+                     return $http.get('http://ksiapi.azurewebsites.net/ksiapi/games/' + ctx.id)
+                        .then(function(res) {
+                            ctx.games = res.data;
+                            return ctx;
+                          });
+                  },
+                  mergeAll = function(ctx) {
+                      var nextGames = {};
+                      for (x in ctx.games) {
+                          var g = ctx.games[x];
+                          var isActiveOrNext = g.SkyrslaStada == '' || g.SkyrslaStada == 'A' || g.SkyrslaStada == 'H' || g.SkyrslaStada == 'L';
+                          if (isActiveOrNext) {
+                              if (!(g.FelagHeimaNumer in nextGames)) {
+                                  nextGames[g.FelagHeimaNumer] = { opponent: g.FelagUtiNafn, opponentId: g.FelagUtiNumer, game: g };
+                              }
+                              if (!(g.FelagUtiNumer in nextGames)) {
+                                  nextGames[g.FelagUtiNumer] = { opponent: g.FelagHeimaNafn, opponentId: g.FelagHeimaNumer, game: g };                                  
+                              }
+                          }
+                          if (nextGames.length == ctx.scoreTable.length) { 
+                              break; 
+                          }
+                      }
+                      
+                      function getPos(id, array) {
+                        for (var index = 0; index < array.length; index++) {
+                        	var element = array[index];
+                              if (element.id == id) {
+                                  return { num: index+1, elm: element };
+                              }
+                        }
+                        return -1;
+                      }
+
+                      var t = ctx.scoreTable.map(function (x, idx, arr) {
+                          var nextGame = nextGames[x.id];
+                          var pos = getPos(nextGame.opponentId, arr);
+                          var posNo = pos.num;
+                          var pn = x.points - pos.elm.points;
+                          x.nextGame = { opponent: { name: nextGame.opponent, position: posNo, pointsDiff: pn }, game: nextGame.game, daysTill: daysBetween(new Date(), new Date(nextGame.game.LeikDagur)) };
+                          x.isToday = (x.nextGame.daysTill == 0);
+                          return x;
+                      });
+                      console.log(t);
+                      $scope.table = t;
+                  };
+              
+              $scope.tournamentChange = function() {
+                  var id = $scope.selectedTournament.id;
+                  $scope.loadTournament($scope.selectedTournament);
+              };
+              
+              $scope.loadTournament = function(t) {
+                  $scope.selectedTournament = t;
+                  var id = t.id;
+                  $scope.tournamentId = id;
+                  
+                  $scope.favSync();
+                  
+                  // Run all the async functions
+                  getScoreTable({id: id })
+                  .then(getGames)
+                  .then(mergeAll);
+              };
+              $scope.addToFav = function(t) {
+                   $scope.favs.push($scope.selectedTournament);
+                   localStorage.setItem('favs', angular.toJson($scope.favs));
+                   $scope.favSync();
+              };
+              
+              $scope.favSync = function() {
+                  $scope.canAddToFav = $scope.tournamentId && $scope.favs.filter(function (x) { return x.id == $scope.tournamentId; }).length == 0;
+              };
+              
+              $scope.remFav = function(t) {
+                  $scope.favSync();
+              };
+              
+              function loadFavs() {
+                  var favs = localStorage.getItem('favs');
+                  if (favs != null && favs != '') {
+                      $scope.favs = angular.fromJson(favs);
+                  }
+                  $scope.favSync();
+              }
+              
+              loadFavs();
+              
+              $http.get('http://ksiapi.azurewebsites.net/ksiapi/tournaments/')
+                .then(function(res) {
+                    $scope.tournaments = res.data;
+                  });
+          });
+    </script>
+</body>
+</html>

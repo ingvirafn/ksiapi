@@ -147,6 +147,37 @@ var apiLeikmenn = {
 
 apiRoutes.push(apiLeikmenn);
 
+var apiPlayerPhoto = {
+	route: '/player/photo/:id', 
+	desc: 'Returns the url for the photo of the player with specified id',
+	handler: function (req, res) {
+		var err = function(p) { onError(res, p); };
+		try {
+			ksiClient.getLeikmadurPhoto(req.params.id, err, onSuccess(res));
+		} catch (error) {
+			err(error);
+		}
+	}
+};
+
+apiRoutes.push(apiPlayerPhoto);
+
+var apiPlayerContracts = {
+	route: '/player/contracts/:id', 
+	desc: 'List of contracts for specified player id',
+	handler: function (req, res) {
+		var err = function(p) { onError(res, p); };
+		try {
+			ksiClient.getLeikmadurContracts(req.params.id, err, onSuccess(res));
+		} catch (error) {
+			err(error);
+		}
+	}
+};
+
+apiRoutes.push(apiPlayerContracts);
+
+
 
 
 var apiGamesiCal = { 
