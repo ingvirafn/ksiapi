@@ -42,7 +42,7 @@
             </ul>
             
             <div>
-                <h2>Create your own iCal feed for tournament (and team) and import it to your calender</h2>
+                <h2>Demo</h2>
                 <form>
                   <div class="form-group">
                     <label for="tourn">Tournament</label>
@@ -54,25 +54,81 @@
 
                   <div class="form-group">
                     <label for="team">Team</label>
-                    <select name="team" id="team" ng-model="customCal.team" class="form-control" 
+                    <select name="team" id="team" ng-model="customCal.team" class="form-control" ng-change="selTeamChange()" 
                         ng-options="option.FelagNafn for option in teams"
                         >
                     </select>
                    </div>
                    
+                   <button type="button" class="btn btn-warning" ng-click="customCal.team = null" ng-show="customCal.team != null">Reset</button>
+                   
                    <div ng-show="customCal.tournament == null">
                        Select a tournament
                    </div>
-                   <div ng-show="customCal.tournament != null">
-                       iCal feed for <span ng-show="customCal.team != null"><b>{{customCal.team.FelagNafn}}</b> in </span> <span ng-show="customCal.tournament != null"><b>{{customCal.tournament.name}}</b></span>
-                       <br/>
-                       <pre>
+                   
+                   <div ng-show="customCal.tournament != null" class="panel panel-default">
+                    <div class="panel-heading">
+                        iCal feed for <span ng-show="customCal.team != null"><b>{{customCal.team.FelagNafn}}</b> in </span> <span ng-show="customCal.tournament != null"><b>{{customCal.tournament.name}}</b></span>
+                    </div>
+                    <div class="panel-body">
                         http://ksiapi.azurewebsites.net/ksiapi/games/ical/{{customCal.tournament.id}}<span ng-show="customCal.team != null">?teamId={{customCal.team.FelagNumer}}</span>
-                        </pre>
+                    </div>
                    </div>
 
-                   <button type="button" class="btn btn-warning" ng-click="customCal.team = null" ng-show="customCal.team != null">Reset</button>
+
                  </form>
+                 
+                 <div ng-show="teams.length > 0">                                  
+                    <h3>
+                        Standings
+                    </h3>
+                    <table class="table table-hover" style="width:60%" >
+                        <thead>
+                        <tr>
+                            <th>Team</th>
+                            <th>Games</th>
+                            <th>Points</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="g in teams">
+                                <td>{{g.FelagNafn}}</td>
+                                <td>{{g.LeikirAlls}}</td>
+                                <td>{{g.Stig}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                 </div>
+                 
+                 <div ng-show="customCal.team != null">
+                    <h3>
+                        Fixtures
+                    </h3>
+                                    
+                    <table class="table table-hover" style="width:60%" >
+                        <thead>
+                        <tr>
+                            <th>Round</th>
+                            <th>Date</th>
+                            <th>Hometeam</th>
+                            <th>Awayteam</th>
+                            <th>Stadium</th>
+                            <th>Result</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="g in games">
+                                <td>{{g.UmferdNumer}}</td>
+                                <td>{{g.LeikDagur | date:'dd.MM HH:mm'}}</td>
+                                <td>{{g.FelagHeimaNafn}}</td>
+                                <td>{{g.FelagUtiNafn}}</td>
+                                <td>{{g.VollurNafn}}</td>
+                                <td>{{g.UrslitHeima}} - {{g.UrslitUti}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                     
+                 </div>
             </div>
         </div>
         
@@ -85,6 +141,7 @@
               $scope.customCal = { tournament:null, team:null };
               $scope.tournaments = [];
               $scope.teams = [];
+              $scope.games = [];
               
               $scope.selChange = function() {
                 $http.get('/ksiapi/table/'+$scope.customCal.tournament.id).success(function(data) {
@@ -92,7 +149,11 @@
                 });
                   
               };
-              
+              $scope.selTeamChange = function() {
+                $http.get('/ksiapi/games/'+$scope.customCal.tournament.id+'?teamId='+$scope.customCal.team.FelagNumer).success(function(data) {
+                    $scope.games = data;
+                });
+              }
               
               $http.get('/ksiapi').success(function(data) {
                   $scope.apiEndpoints = data;

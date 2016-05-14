@@ -78,7 +78,6 @@ var apiGames = {
 	handler: function (req, res) {
 		var err = function(p) { onError(res, p); };
 		try {
-			debug(req.query.teamId);
 			ksiClient.getMot({ id: req.params.id, teamId: req.query.teamId }, err, onSuccess(res));
 		} catch (error) {
 			err(error);
