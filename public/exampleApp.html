@@ -164,7 +164,7 @@
               var tournamentId = '33503';
               
               var getScoreTable = function(ctx) {
-                  return $http.get('http://ksiapi.azurewebsites.net/ksiapi/table/' + ctx.id)
+                  return $http.get('/ksiapi/table/' + ctx.id)
                         .then(function(res) {
                           var res = res.data.map(function(x, idx, arr) {
                              var nextUp = '';
@@ -177,7 +177,7 @@
                         });
                   },
                   getGames = function(ctx) {
-                     return $http.get('http://ksiapi.azurewebsites.net/ksiapi/games/' + ctx.id)
+                     return $http.get('/ksiapi/games/' + ctx.id)
                         .then(function(res) {
                             ctx.games = res.data;
                             return ctx;
@@ -265,7 +265,7 @@
               
               loadFavs();
               
-              $http.get('http://ksiapi.azurewebsites.net/ksiapi/tournaments/')
+              $http.get('/ksiapi/tournaments/')
                 .then(function(res) {
                     $scope.tournaments = res.data;
                   });

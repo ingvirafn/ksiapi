@@ -57,11 +57,12 @@ var apiRoutes = [];
 // List of tournaments
 var apiTournaments = { 
 	route: '/tournaments', 
-	desc: 'Lists tournaments for current year',
+	desc: 'Lists tournaments for specific year and gender (defaults: current year and male)',
+	pars: [ { name:'year', desc:'Tournaments\' year (optional query parameter)' }, { name:'gender', desc:'0=Female, 1=Male (optional query parameter)' } ],	
 	handler: function (req, res) {
 		var err = function(p) { onError(res, p); };
 		try {
-			ksiClient.getMotList(err, onSuccess(res));
+			ksiClient.getMotList(req.query, err, onSuccess(res));
 		} catch (error) {
 			err(error);
 		}

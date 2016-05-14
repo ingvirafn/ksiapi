@@ -40,19 +40,66 @@
                     </div>
                 </li>
             </ul>
+            
+            <div>
+                <h2>Create your own iCal feed for tournament (and team) and import it to your calender</h2>
+                <form>
+                  <div class="form-group">
+                    <label for="tourn">Tournament</label>
+                    <select name="tourn" id="tourn" ng-model="customCal.tournament" ng-change="selChange(option)" class="form-control" 
+                        ng-options="option.name for option in tournaments"
+                        >
+                    </select>
+                   </div>
+
+                  <div class="form-group">
+                    <label for="team">Team</label>
+                    <select name="team" id="team" ng-model="customCal.team" class="form-control" 
+                        ng-options="option.FelagNafn for option in teams"
+                        >
+                    </select>
+                   </div>
+                   
+                   <div ng-show="customCal.tournament == null">
+                       Select a tournament
+                   </div>
+                   <div ng-show="customCal.tournament != null">
+                       iCal feed for <span ng-show="customCal.team != null"><b>{{customCal.team.FelagNafn}}</b> in </span> <span ng-show="customCal.tournament != null"><b>{{customCal.tournament.name}}</b></span>
+                       <br/>
+                       <pre>
+                        http://ksiapi.azurewebsites.net/ksiapi/games/ical/{{customCal.tournament.id}}<span ng-show="customCal.team != null">?teamId={{customCal.team.FelagNumer}}</span>
+                        </pre>
+                   </div>
+
+                   <button type="button" class="btn btn-warning" ng-click="customCal.team = null" ng-show="customCal.team != null">Reset</button>
+                 </form>
+            </div>
         </div>
         
-        <a href="/exampleApp.html">Take a look at the example app</a>
     </div>
 
     <script>
         angular.module('ksiApiApp', [])
           .controller('mainCtrl', function ($scope, $http) {
               $scope.apiEndpoints = [];
-                //{ desc: 'learn angular', route: 'xx' },
-                //{ desc: 'build an angular app', route: 'xx' }];
+              $scope.customCal = { tournament:null, team:null };
+              $scope.tournaments = [];
+              $scope.teams = [];
+              
+              $scope.selChange = function() {
+                $http.get('/ksiapi/table/'+$scope.customCal.tournament.id).success(function(data) {
+                    $scope.teams = data;
+                });
+                  
+              };
+              
+              
               $http.get('/ksiapi').success(function(data) {
                   $scope.apiEndpoints = data;
+              });
+              
+              $http.get('/ksiapi/tournaments').success(function(data) {
+                  $scope.tournaments = data;
               });
 
           });
