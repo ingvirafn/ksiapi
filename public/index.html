@@ -19,6 +19,9 @@
         body > div > div > ul > li {
             margin: 10px;
         }
+        a {
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -41,7 +44,7 @@
                 </li>
             </ul>
             
-            <div>
+            <div class="row">
                 <h2>Demo</h2>
                 <form>
                   <div class="form-group">
@@ -78,11 +81,14 @@
 
                  </form>
                  
-                 <div ng-show="teams.length > 0">                                  
+            </div>
+            <div class="row">
+                
+                 <div ng-show="teams.length > 0" class="col-md-6">                                  
                     <h3>
                         Standings
                     </h3>
-                    <table class="table table-hover" style="width:60%" >
+                    <table class="table table-hover" >
                         <thead>
                         <tr>
                             <th>Team</th>
@@ -92,7 +98,7 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="g in teams">
-                                <td>{{g.FelagNafn}}</td>
+                                <td><a ng-click="$parent.selTeam(g.FelagNumer)">{{g.FelagNafn}}</a></td>
                                 <td>{{g.LeikirAlls}}</td>
                                 <td>{{g.Stig}}</td>
                             </tr>
@@ -100,12 +106,12 @@
                     </table>
                  </div>
                  
-                 <div ng-show="customCal.team != null">
+                 <div ng-show="games != null && games.length > 0" class="col-md-6">
                     <h3>
-                        Fixtures
+                        Fixtures 
                     </h3>
                                     
-                    <table class="table table-hover" style="width:60%" >
+                    <table class="table table-hover" >
                         <thead>
                         <tr>
                             <th>Round</th>
@@ -154,6 +160,11 @@
                     $scope.games = data;
                 });
               }
+              $scope.selTeam = function(teamId) {
+                $http.get('/ksiapi/games/'+$scope.customCal.tournament.id+'?teamId='+teamId).success(function(data) {
+                    $scope.games = data;
+                });
+              };
               
               $http.get('/ksiapi').success(function(data) {
                   $scope.apiEndpoints = data;
