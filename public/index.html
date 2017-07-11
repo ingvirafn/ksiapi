@@ -120,16 +120,19 @@
                             <th>Awayteam</th>
                             <th>Stadium</th>
                             <th>Result</th>
+                            <th>Points</th>
                         </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="g in games">
+                            <tr ng-repeat="g in games" ng-class="{success: g.ResultSign == 'W', warning: g.ResultSign == 'T'}">
                                 <td>{{g.UmferdNumer}}</td>
                                 <td>{{g.LeikDagur | date:'dd.MM HH:mm'}}</td>
                                 <td>{{g.FelagHeimaNafn}}</td>
                                 <td>{{g.FelagUtiNafn}}</td>
                                 <td>{{g.VollurNafn}}</td>
                                 <td>{{g.UrslitHeima}} - {{g.UrslitUti}}</td>
+                                <td>{{g.Points}}</td>
+                                <!--<td>{{ g | json }}</td>-->
                             </tr>
                         </tbody>
                     </table>
@@ -141,6 +144,42 @@
     </div>
 
     <script>
+
+        var enhance = (teamId, x) => {
+            try {                
+                var isHome = false;
+                if (teamId == x.FelagHeimaNumer) {
+                    isHome = true;
+                };
+                
+                x.ResultSign = "";
+
+                if (x.UrslitHeima != null && x.UrslitHeima.length > 0) {
+                    if (parseInt(x.UrslitHeima) < parseInt(x.UrslitUti)) {
+                        if (isHome)
+                            x.ResultSign = "L";
+                        else
+                            x.ResultSign = "W";
+                    }
+                    else if (parseInt(x.UrslitHeima) > parseInt(x.UrslitUti)) {
+                        if (isHome)
+                            x.ResultSign = "W";
+                        else
+                            x.ResultSign = "L";
+                    }
+                    else {
+                        x.ResultSign = "T";
+                    }
+                }
+                x.Points = 0;
+
+                if (x.ResultSign == "T") x.Points = 1;
+                if (x.ResultSign == "W") x.Points = 3;
+            } catch (err) { }
+
+            return x;
+        };
+
         angular.module('ksiApiApp', [])
           .controller('mainCtrl', function ($scope, $http) {
               $scope.apiEndpoints = [];
@@ -157,12 +196,12 @@
               };
               $scope.selTeamChange = function() {
                 $http.get('/ksiapi/games/'+$scope.customCal.tournament.id+'?teamId='+$scope.customCal.team.FelagNumer).success(function(data) {
-                    $scope.games = data;
+                    $scope.games = data.map(x => enhance($scope.customCal.team.FelagNumer, x));
                 });
               }
               $scope.selTeam = function(teamId) {
                 $http.get('/ksiapi/games/'+$scope.customCal.tournament.id+'?teamId='+teamId).success(function(data) {
-                    $scope.games = data;
+                    $scope.games = data.map(x => enhance(teamId, x));
                 });
               };
               
